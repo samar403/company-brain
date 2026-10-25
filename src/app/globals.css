@@ -1,26 +1,282 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Company Brain: "field notebook" design language.
+   Warm paper, ink, hairline rules, a serif masthead and a single signal colour. */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --paper: #f4efe6;
+  --surface: #fbf8f2;
+  --sunken: #ece5d8;
+  --ink: #1d1b16;
+  --ink-2: #4a453b;
+  --muted: #756e61;
+  --rule: #ddd4c3;
+  --rule-strong: #c7bca7;
+  --signal: #c93d1b;
+  --signal-ink: #ffffff;
+  --signal-soft: #f7d9cf;
+  --moss: #3f6b4f;
+  --moss-soft: #dbe7dd;
+  --amber: #8f5a00;
+  --amber-soft: #f5e6c4;
+  --marker: #f6e27a;
+  --focus: #2f5bd3;
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --paper: #14130f;
+    --surface: #1c1a15;
+    --sunken: #100f0c;
+    --ink: #eee8dc;
+    --ink-2: #c9c1b2;
+    --muted: #958d7e;
+    --rule: #2f2b24;
+    --rule-strong: #453f35;
+    --signal: #ff6a4d;
+    --signal-ink: #1a0b06;
+    --signal-soft: #3a1d15;
+    --moss: #8fc29f;
+    --moss-soft: #1f2e24;
+    --amber: #e3b45c;
+    --amber-soft: #33270f;
+    --marker: #5b4f12;
+    --focus: #8aa8ff;
+    color-scheme: dark;
   }
+}
+:root[data-theme="dark"] {
+  --paper: #14130f;
+  --surface: #1c1a15;
+  --sunken: #100f0c;
+  --ink: #eee8dc;
+  --ink-2: #c9c1b2;
+  --muted: #958d7e;
+  --rule: #2f2b24;
+  --rule-strong: #453f35;
+  --signal: #ff6a4d;
+  --signal-ink: #1a0b06;
+  --signal-soft: #3a1d15;
+  --moss: #8fc29f;
+  --moss-soft: #1f2e24;
+  --amber: #e3b45c;
+  --amber-soft: #33270f;
+  --marker: #5b4f12;
+  --focus: #8aa8ff;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-signal: var(--signal);
+  --color-signal-ink: var(--signal-ink);
+  --color-signal-soft: var(--signal-soft);
+  --color-moss: var(--moss);
+  --color-moss-soft: var(--moss-soft);
+  --color-amber: var(--amber);
+  --color-amber-soft: var(--amber-soft);
+  --color-marker: var(--marker);
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+html,
+body {
+  background: var(--paper);
+  color: var(--ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--marker);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Dot-grid paper, no image assets. */
+.grain {
+  background-image: radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ink) 7%, transparent) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+.marker {
+  background: linear-gradient(transparent 58%, var(--marker) 58%, var(--marker) 92%, transparent 92%);
+  padding: 0 0.08em;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Long-form content rendered from Markdown */
+.prose-brain {
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.prose-brain > * + * {
+  margin-top: 0.8em;
+}
+.prose-brain h1,
+.prose-brain h2 {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  font-size: 1.9em;
+  line-height: 1.1;
+  margin-top: 1.4em;
+}
+.prose-brain h3 {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 1.8em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid var(--rule);
+}
+.prose-brain h4 {
+  font-weight: 600;
+  color: var(--ink);
+}
+.prose-brain strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.prose-brain ul,
+.prose-brain ol {
+  padding-left: 1.3em;
+}
+.prose-brain ul {
+  list-style: none;
+}
+.prose-brain ul > li {
+  position: relative;
+}
+.prose-brain ul > li::before {
+  content: "";
+  position: absolute;
+  left: -1em;
+  top: 0.8em;
+  width: 0.5em;
+  height: 1.5px;
+  background: var(--signal);
+}
+.prose-brain ol {
+  list-style: decimal;
+}
+.prose-brain ol > li::marker {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--muted);
+}
+.prose-brain li + li {
+  margin-top: 0.3em;
+}
+.prose-brain code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--sunken);
+  border: 1px solid var(--rule);
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+  color: var(--ink);
+}
+.prose-brain pre {
+  background: var(--sunken);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 0.9em 1em;
+  overflow-x: auto;
+}
+.prose-brain pre code {
+  border: 0;
+  padding: 0;
+  background: none;
+}
+.prose-brain a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--signal);
+  text-underline-offset: 3px;
+}
+.prose-brain blockquote {
+  border-left: 2px solid var(--signal);
+  padding-left: 0.9em;
+  color: var(--muted);
+}
+.prose-brain hr {
+  border: 0;
+  border-top: 1px dashed var(--rule-strong);
+}
+.prose-brain a.cite {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1;
+  padding: 3px 5px 2px;
+  border-radius: 4px;
+  border: 1px solid var(--rule-strong);
+  background: var(--surface);
+  color: var(--ink-2);
+  text-decoration: none;
+  vertical-align: 1px;
+}
+.prose-brain a.cite:hover {
+  border-color: var(--signal);
+  color: var(--signal);
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.thinking span {
+  animation: pulse-dot 1.2s infinite;
+}
+.thinking span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.thinking span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thinking span {
+    animation: none;
+    opacity: 0.7;
+  }
 }
